@@ -1,22 +1,15 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="TSPSite.master.cs" Inherits="KPMAMS.TSPSite" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ASite.master.cs" Inherits="KPMAMS.ASite" %>
 
 <!DOCTYPE html>
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Teacher/Student/Parent Site Master Page</title>
+
+    <title>Admin Site Master Page</title>
     <link href="Bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
-    <link href="css/TSPSite.css" rel="stylesheet" />
+    <link href="css/ASite.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="Bootstrap/js/jquery-3.3.1.slim.min.js"></script>
-    <script src="Bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="Bootstrap/js/popper.min.js"></script>
-    <script src="Bootstrap/js/bootstrap.min.js"></script>
-    <script src="DataTables/js/jquery.dataTables.min.js"></script>
-    <asp:ContentPlaceHolder ID="head" runat="server" >
-    </asp:ContentPlaceHolder>
 </head>
 <body>
     <form runat="server">
@@ -52,7 +45,7 @@
                                     <asp:HyperLink ID="hlForum" class="nav-link" href="ForumList.aspx" runat="server">Forum</asp:HyperLink>
                                 </li>
                                 <li class="nav-item dropdown ">
-                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" href="#">Tools</a>
+                                    <a class="nav-link dropdown-toogle" data-toggle="dropdown" role="button" href="#">Tools<i class="fas fa-caret-down"></i></a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#">Tools1</a>
                                         <a class="dropdown-item" href="#">Tools2</a>
@@ -61,16 +54,15 @@
                                     </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="LiveChat.aspx">Live Chat</a>
+                                    <a class="nav-link" href="#">Live Chat</a>
                                 </li>
                             </ul>
-                            <ul class="navbar-nav">
-                                <li class="nav-item active">
-                                    <asp:LinkButton class="nav-link" ID="lbLogout" runat="server" OnClick="lbLogout_Click">Logout</asp:LinkButton>
+                            <ul class="navbar-nav" >
+                                <li class="nav-item active" >
+                                    <asp:LinkButton class="nav-link" ID="lbLogout" runat="server">Logout</asp:LinkButton>
                                 </li>
-
                                 <li class="nav-item active">
-                                    <asp:LinkButton class="nav-link" ID="lbProfile" runat="server">Hello user</asp:LinkButton>
+                                    <asp:LinkButton class="nav-link" ID="lbProfile" runat="server">Hello Admin</asp:LinkButton>
                                 </li>
                             </ul>
                         </div>
@@ -116,7 +108,10 @@
                 </div>
             </div>
         </footer>
-        
+        <script src="Bootstrap/js/jquery-3.3.1.slim.min.js"></script>
+        <script src="Bootstrap/js/popper.min.js"></script>
+        <script src="Bootstrap/js/bootstrap.min.js"></script>
     </form>
 </body>
     
+
