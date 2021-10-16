@@ -15,7 +15,10 @@ namespace KPMAMS
         string strcon = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            if (IsPostBack == false)
+            {
+               
+            }
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)

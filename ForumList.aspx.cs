@@ -15,8 +15,12 @@ namespace KPMAMS
         string strCon = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (IsPostBack == false)
+            if (Page.IsPostBack == false)
             {
+                if (!(Session["userGUID"]!=null))
+                {
+                    Response.Redirect("Login.aspx");
+                }
                 CheckRole();
             }
         }
@@ -90,10 +94,6 @@ namespace KPMAMS
             }
         }
 
-        protected void OnSelectedIndexChanged(object sender, EventArgs e)
-        {
-            BindClasses();
-        }
 
         protected void BindGridView()
         {
@@ -126,6 +126,8 @@ namespace KPMAMS
                     GvForumList.DataSource = dt;
                     GvForumList.DataBind();
                 }
+
+                con.Close();
             }
             catch (SqlException ex)
             {
@@ -135,6 +137,10 @@ namespace KPMAMS
             }
         }
 
+        protected void dlClassList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindGridView();
+        }
     }
     
 }

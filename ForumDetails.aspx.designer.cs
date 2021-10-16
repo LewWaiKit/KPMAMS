@@ -150,6 +150,15 @@ namespace KPMAMS
         protected global::System.Web.UI.WebControls.Label lbUserName;
 
         /// <summary>
+        /// divComment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divComment;
+
+        /// <summary>
         /// lblNoData control.
         /// </summary>
         /// <remarks>
@@ -184,5 +193,23 @@ namespace KPMAMS
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
+
+        /// <summary>
+        /// btnDeleteComment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDeleteComment;
+
+        /// <summary>
+        /// btnCancelModify control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancelModify;
     }
 }

@@ -82,7 +82,7 @@
             </div>
         </div>
     </div>
-    <div class="container pt-2 pb-2">
+    <div class="container pt-2 pb-2" id="divComment" runat="server" >
         <div class="row">
             <div class="col mx-auto">
                 <div class="card">
@@ -102,25 +102,30 @@
                                 <h3>
                                     <asp:Label ID="lblNoData" runat="server" Text="No comment yet" Visible="false"></asp:Label>
                                 </h3>
-                                <asp:GridView class="table table-striped table-bordered table-responsive-md" ID="GvCommentList" runat="server" AutoGenerateColumns="False" DataKeyNames="CommentGUID" >
+                                <asp:GridView class="table table-striped table-bordered table-responsive-md" ID="GvCommentList" runat="server" AutoGenerateColumns="False" DataKeyNames="CommentGUID" OnRowDataBound="GvCommentList_RowDataBound" OnRowCommand="GvCommentList_RowCommand" >
                                     <Columns>
-                                        <asp:BoundField DataField="CommentGUID" HeaderText="Comment GUID" ReadOnly="True" SortExpression="CommentGUID" Visible="false"/>
+                                        <asp:BoundField DataField="CommentGUID" HeaderText="Comment GUID" ReadOnly="True" SortExpression="CommentGUID" Visible="true"/>
                                         <asp:TemplateField HeaderText="Comment">
                                             <ItemTemplate>
                                                 <div class="container-fluid">
                                                     <div class="row">
                                                         <div class="col">
-                                                            <asp:Label ID="lblCommentBy" runat="server" Text='<%# Eval("CommentBy") %>' Font-Bold="True"></asp:Label>
+                                                            <asp:Label ID="lblCommentBy" runat="server" Text='<%# Eval("CommentBy") %>' Font-Bold="True" ForeColor="#3333FF"></asp:Label>
                                                             comment on
                                                             <asp:Label ID="lblCommentDate" runat="server" Text='<%# Eval("CreateDate") %>'></asp:Label>      
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <asp:Label ID="lblCommentContent" runat="server" Text='<%# Eval("Content") %>' Font-Size="Small"></asp:Label>
+                                                            <asp:Label ID="lblCommentContent" runat="server" Text='<%# Eval("Content") %>'></asp:Label>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField>
+                                            <ItemTemplate>
+                                            <asp:Button ID="btnModifyComment" runat="server" class="btn btn-block btn-info btn-sm" Text="Modify" CommandName="selectModify" CommandArgument="<%# Container.DataItemIndex %>" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -135,6 +140,8 @@
                                 </div>
                                 <div class="from-group">
                                     <asp:Button ID="btnSubmit" runat="server" class="btn btn-block btn-info btn-lg" Text="Post comment" OnClick="btnSubmit_Click"/>
+                                    <asp:Button ID="btnDeleteComment" runat="server" class="btn btn-block btn-danger btn-lg" Text="Delete" Visible="false" OnClick="btnDeleteComment_Click" />
+                                    <asp:Button ID="btnCancelModify" runat="server" class="btn btn-block btn-secondary btn-lg" Text="Cancel" Visible="false" OnClick="btnCancelModify_Click" />
                                 </div>
                             </div>
                         </div>

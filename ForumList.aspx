@@ -31,7 +31,7 @@
             </div>
             <div class="col-md-auto" >
                 <div class="from-group">
-                    <asp:DropDownList class="form-control" ID="dlClassList" runat="server" Visible="false" OnSelectedIndexChanged = "OnSelectedIndexChanged">
+                    <asp:DropDownList class="form-control" ID="dlClassList" runat="server" Visible="false" OnSelectedIndexChanged ="dlClassList_SelectedIndexChanged" AutoPostBack="true" >
                     </asp:DropDownList>
                 </div>
             </div>

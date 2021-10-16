@@ -15,6 +15,11 @@ namespace KPMAMS
         string strcon = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            if (!(Session["userGUID"] != null))
+            {
+                Response.Redirect("Login.aspx");
+            }
             if (IsPostBack == false)
             {
 

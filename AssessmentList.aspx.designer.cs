@@ -11,26 +11,26 @@ namespace KPMAMS
 {
 
 
-    public partial class CreateForum
+    public partial class AssessmentList
     {
 
         /// <summary>
-        /// tbTitle control.
+        /// lbClass control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbTitle;
+        protected global::System.Web.UI.WebControls.Label lbClass;
 
         /// <summary>
-        /// RegularExpressionValidatorTitle control.
+        /// btnCreateAssessment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidatorTitle;
+        protected global::System.Web.UI.WebControls.Button btnCreateAssessment;
 
         /// <summary>
         /// dlClassList control.
@@ -42,21 +42,21 @@ namespace KPMAMS
         protected global::System.Web.UI.WebControls.DropDownList dlClassList;
 
         /// <summary>
-        /// tbContent control.
+        /// dlStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbContent;
+        protected global::System.Web.UI.WebControls.DropDownList dlStatus;
 
         /// <summary>
-        /// btnCreate control.
+        /// GvAssessmentList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCreate;
+        protected global::System.Web.UI.WebControls.GridView GvAssessmentList;
     }
 }

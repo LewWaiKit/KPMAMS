@@ -13,9 +13,15 @@ namespace KPMAMS
     public partial class WebForm1 : System.Web.UI.Page
     {
         string strcon = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+        public static string selectedComment;
+        string commentBy;
         DateTime lastUpdateDate;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!(Session["userGUID"] != null))
+            {
+                Response.Redirect("Login.aspx");
+            }
             if (IsPostBack == false)
             {
                 LoadForum();
@@ -190,8 +196,7 @@ namespace KPMAMS
 
                     cmd.ExecuteNonQuery();
                     con.Close();
-                    RefreshPage();
-                    Response.Write("<script>alert('Forum updated successfully');</script>");
+                    Page.Response.Redirect(Page.Request.Url.ToString(), false);
                 }
                 catch (Exception ex)
                 {
@@ -204,17 +209,6 @@ namespace KPMAMS
             }
             
         }
-        protected void RefreshPage()
-        {
-            tbContent.Visible = false;
-            tbTitle.Visible = false;
-            lbTitle.Visible = true;
-            lbContent.Visible = true;
-            lbMenu.Visible = true;
-            btnUpdate.Visible = false;
-            btnCancel.Visible = false;
-            LoadForum();
-        }
 
         protected void lbModify_Click(object sender, EventArgs e)
         {
@@ -226,7 +220,8 @@ namespace KPMAMS
             tbTitle.Text = lbTitle.Text;
             tbContent.Text = lbContent.Text;
             btnUpdate.Visible = true;
-            btnCancel.Visible = true;   
+            btnCancel.Visible = true;
+            divComment.Visible = false;
         }
 
         protected void lbDelete_Click(object sender, EventArgs e)
@@ -243,7 +238,7 @@ namespace KPMAMS
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            RefreshPage();
+            Page.Response.Redirect(Page.Request.Url.ToString(), false);
         }
 
         protected void BindGridView()
@@ -289,35 +284,177 @@ namespace KPMAMS
         {
             if (tbComment.Text != "")
             {
-                try
+                if (btnSubmit.Text == "Post comment")
                 {
-                    SqlConnection con = new SqlConnection(strcon);
-                    if (con.State == ConnectionState.Closed)
+                    try
                     {
-                        con.Open();
-                    }
-                    Guid CommentGUID = Guid.NewGuid();
-                    SqlCommand cmd = new SqlCommand("INSERT INTO Comment(CommentGUID,ForumGUID,CreateDate,Content,CommentBy) values (@CommentGUID,@ForumGUID,@CreateDate,@Content,@CommentBy)", con);
-                    cmd.Parameters.AddWithValue("@CommentGUID", CommentGUID);
-                    cmd.Parameters.AddWithValue("@ForumGUID", Request.QueryString["ForumGUID"]);
-                    cmd.Parameters.AddWithValue("@CreateDate", DateTime.Now);
-                    cmd.Parameters.AddWithValue("@Content", tbComment.Text.Trim());
-                    cmd.Parameters.AddWithValue("@CommentBy", Session["fullName"]);
+                        SqlConnection con = new SqlConnection(strcon);
+                        if (con.State == ConnectionState.Closed)
+                        {
+                            con.Open();
+                        }
+                        Guid CommentGUID = Guid.NewGuid();
+                        SqlCommand cmd = new SqlCommand("INSERT INTO Comment(CommentGUID,ForumGUID,CreateDate,Content,CommentBy) values (@CommentGUID,@ForumGUID,@CreateDate,@Content,@CommentBy)", con);
+                        cmd.Parameters.AddWithValue("@CommentGUID", CommentGUID);
+                        cmd.Parameters.AddWithValue("@ForumGUID", Request.QueryString["ForumGUID"]);
+                        cmd.Parameters.AddWithValue("@CreateDate", DateTime.Now);
+                        cmd.Parameters.AddWithValue("@Content", tbComment.Text.Trim());
+                        cmd.Parameters.AddWithValue("@CommentBy", Session["fullName"]);
 
-                    cmd.ExecuteNonQuery();
-                    cmd.Dispose();
-                    con.Close();
-                    tbComment.Text = "";
-                    Page.Response.Redirect(Page.Request.Url.ToString(), false);
+                        cmd.ExecuteNonQuery();
+                        cmd.Dispose();
+                        con.Close();
+                        tbComment.Text = "";
+                        Page.Response.Redirect(Page.Request.Url.ToString(), false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Response.Write(ex.Message);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Response.Write(ex.Message);
+                else {
+                    if (tbComment.Text.Trim() != "")
+                    {
+                        try
+                        {
+                            SqlConnection con = new SqlConnection(strcon);
+                            if (con.State == ConnectionState.Closed)
+                            {
+                                con.Open();
+                            }
+                            SqlCommand cmd = new SqlCommand("UPDATE Comment SET Content=@Content Where CommentGUID=@CommentGUID", con);
+                            cmd.Parameters.AddWithValue("@Content", tbComment.Text.Trim());
+                            cmd.Parameters.AddWithValue("@CommentGUID", selectedComment);
+
+                            cmd.ExecuteNonQuery();
+                            con.Close();
+                            Page.Response.Redirect(Page.Request.Url.ToString(), false);
+                        }
+                        catch (Exception ex)
+                        {
+                            Response.Write(ex.Message);
+                        }
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('Title and content of forum cannot be blank');</script>");
+                    }
                 }
             }
             else {
                 Response.Write("<script>alert('Comment cannot be blank');</script>");
             }
         }
+
+        protected void GvCommentList_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            e.Row.Cells[0].Visible = false;
+
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Button btnModify = e.Row.FindControl("btnModifyComment") as Button;
+
+                if (btnModify != null) {
+                    /*selectedComment = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "CommentGUID"));*/
+                    commentBy = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "CommentBy"));
+                    if (commentBy == Convert.ToString(Session["fullName"]))
+                    {
+                        btnModify.Visible = true;
+                    }
+                    else {
+                        btnModify.Visible = false;
+                    }
+                }
+            }
+                    
+        }
+
+        protected void LoadComment()
+        {
+            try
+            {
+                if (!(selectedComment == null))
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    DataTable dt = new DataTable();
+                    string strCon = ConfigurationManager.ConnectionStrings["con"].ConnectionString;
+                    SqlConnection con = new SqlConnection(strCon);
+                    if (con.State == ConnectionState.Closed)
+                    {
+                        con.Open();
+                    }
+                    String select = "Select Content From Comment Where CommentGUID=@CommentGUID";
+                    cmd = new SqlCommand(select, con);
+                    cmd.Parameters.AddWithValue("@CommentGUID", selectedComment);
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        dt.Load(dr);
+                        con.Close();
+                        //Stored to textbox here
+                        tbComment.Text = dt.Rows[0][0].ToString();
+                    }
+                    else
+                    {
+                        Response.Write("error to modify comment1");
+                    }
+                }
+                else
+                {
+                    Response.Write("selectedComment guid = null");
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.Message);
+            }
+
+        }
+
+
+
+        protected void btnDeleteComment_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(strcon);
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                }
+                String strDelete = "";
+                SqlCommand cmd = new SqlCommand(strDelete, con);
+                cmd = new SqlCommand("DELETE From Comment Where CommentGUID='" + selectedComment + "';", con);
+                cmd.ExecuteNonQuery();
+                con.Close();
+
+                Page.Response.Redirect(Page.Request.Url.ToString(), false);
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.Message);
+            }
+        }
+
+
+        protected void GvCommentList_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "selectModify") {
+                int i = Convert.ToInt32(e.CommandArgument);
+                GridViewRow row = GvCommentList.Rows[i];
+                selectedComment = row.Cells[0].Text;
+                btnDeleteComment.Visible = true;
+                btnCancelModify.Visible = true;
+                btnSubmit.Text = "Update";
+                LoadComment();
+            }
+        }
+
+        protected void btnCancelModify_Click(object sender, EventArgs e)
+        {
+            Page.Response.Redirect(Page.Request.Url.ToString(), false);
+        }
+
     }
 }

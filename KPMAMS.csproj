@@ -93,6 +93,7 @@
     <Content Include="App_Data\KPMdb_log.ldf">
       <DependentUpon>KPMdb.mdf</DependentUpon>
     </Content>
+    <Content Include="AssessmentList.aspx" />
     <Content Include="Bootstrap\css\bootstrap.min.css" />
     <Content Include="Bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="Bootstrap\js\bootstrap.min.js" />
@@ -101,6 +102,7 @@
     <Content Include="CreateForum.aspx" />
     <Content Include="css\ASite.css" />
     <Content Include="css\ForumList.css" />
+    <Content Include="css\LiveChat.css" />
     <Content Include="css\Login.css" />
     <Content Include="css\TSPSite.css" />
     <Content Include="DataTables\css\jquery.dataTables.min.css" />
@@ -121,6 +123,13 @@
     <Content Include="ForumDetails.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssessmentList.aspx.cs">
+      <DependentUpon>AssessmentList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AssessmentList.aspx.designer.cs">
+      <DependentUpon>AssessmentList.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Messages.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="ASite.Master.cs">
